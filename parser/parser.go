@@ -95,11 +95,13 @@ func (p *Parser) peekTokenIs(t token.Type) bool {
 }
 
 // expectPeek advances the cur and peek tokens if the peek is as expected.
+// Otherwise, it records an error.
 func (p *Parser) expectPeek(t token.Type) bool {
 	if p.peekTokenIs(t) {
 		p.nextToken()
 		return true
 	} else {
+		p.peekError(t)
 		return false
 	}
 }
