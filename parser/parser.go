@@ -7,14 +7,22 @@ import (
 	"github.com/KonradChlupka/pierogi/token"
 )
 
-type Parser struct {
-	l *lexer.Lexer
+type (
+	Parser struct {
+		l *lexer.Lexer
 
-	errors []string
+		errors []string
 
-	curToken  token.Token
-	peekToken token.Token
-}
+		curToken  token.Token
+		peekToken token.Token
+
+		prefixParseFns map[token.Type]prefixParseFn
+		infixParseFns  map[token.Type]infixParseFn
+	}
+
+	prefixParseFn func() ast.Expression
+	infixParseFn  func(ast.Expression) ast.Expression
+)
 
 func New(l *lexer.Lexer) *Parser {
 	p := &Parser{l: l, errors: []string{}}
@@ -117,4 +125,12 @@ func (p *Parser) expectPeek(t token.Type) bool {
 		p.peekError(t)
 		return false
 	}
+}
+
+func (p *Parser) registerPrefix(tokenType token.Type, fn prefixParseFn) {
+	p.prefixParseFns[tokenType] = fn
+}
+
+func (p *Parser) registerInfix(tokenType token.Type, fn infixParseFn) {
+	p.infixParseFns[tokenType] = fn
 }
