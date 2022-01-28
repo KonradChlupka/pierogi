@@ -118,8 +118,8 @@ func TestBooleanExpression(t *testing.T) {
 	if b.Value != true {
 		t.Errorf("b.Value not %t. got=%t", true, b.Value)
 	}
-	if b.TokenLiteral() != "TRUE" {
-		t.Errorf("b.TokenLiteral not %s. got=%s", "TRUE", b.TokenLiteral())
+	if b.TokenLiteral() != "true" {
+		t.Errorf("b.TokenLiteral not %s. got=%s", "true", b.TokenLiteral())
 	}
 }
 
